@@ -1,0 +1,50 @@
+[project]
+name = "ai-medical-assistant"
+version = "0.1.0"
+requires-python = ">=3.12"
+
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+#    "pydantic",
+#    "httpx",
+    "openai"
+]
+
+[dependency-groups]
+dev = [
+    "ruff",
+    "mypy",
+    "pytest",
+#    "pytest-cov"
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 79
+target-version = "py312"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+plugins = ["pydantic.mypy"]
+disable_error_code = ["import-untyped"]
+explicit_package_bases = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+pythonpath = ["."]
+testpaths = ["tests"]
+#python_files = ["test_*.py", "*_test.py"]
+#python_classes = ["Test*", "*Tests"]
+#python_functions = ["test_*"]
+#addopts = "-v --strict-markers"
+#
+#[tool.coverage.run]
+#source = ["src"]
+#branch = true
+#
+#[tool.coverage.report]
+#show_missing = true
