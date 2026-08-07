@@ -6,8 +6,8 @@ requires-python = ">=3.12"
 dependencies = [
     "fastapi",
     "uvicorn[standard]",
-#    "pydantic",
-#    "httpx",
+    #    "pydantic",
+    #    "httpx",
     "openai"
 ]
 
@@ -16,7 +16,7 @@ dev = [
     "ruff",
     "mypy",
     "pytest",
-#    "pytest-cov"
+    #    "pytest-cov"
 ]
 
 [tool.uv]
@@ -37,6 +37,10 @@ explicit_package_bases = true
 asyncio_mode = "auto"
 pythonpath = ["."]
 testpaths = ["tests"]
+markers = [
+    "gpu: test that needs the real model",
+    "integration: integration tests",
+]
 #python_files = ["test_*.py", "*_test.py"]
 #python_classes = ["Test*", "*Tests"]
 #python_functions = ["test_*"]
