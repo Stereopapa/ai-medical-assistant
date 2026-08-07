@@ -1,0 +1,6 @@
+{
+  "name": "AI Medical Assistant",
+  "dockerComposeFile": ["../docker-compose.yml"],
+  "service": "app",
+  "workspaceFolder": "/workspace"
+}
