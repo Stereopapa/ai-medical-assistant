@@ -6,9 +6,10 @@ requires-python = ">=3.12"
 dependencies = [
     "fastapi",
     "uvicorn[standard]",
-    #    "pydantic",
-    #    "httpx",
-    "openai"
+    "httpx",
+    "openai",
+    "psutil",
+    "pynvml>=13.0.1",
 ]
 
 [dependency-groups]
