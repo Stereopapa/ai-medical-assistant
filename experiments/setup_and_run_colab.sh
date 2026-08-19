@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo "=== 1. System dependencies installation ==="
+apt-get update -qq && apt-get install -y -qq zstd
 curl -fsSL https://ollama.com/install.sh | sh
 pip install nvidia-ml-py psutil httpx
 

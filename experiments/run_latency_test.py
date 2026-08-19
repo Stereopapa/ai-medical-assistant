@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import httpx
 
-from app.use_cases.evaluate_model import EvaluateModelUseCase
+from src.app.use_cases.evaluate_model import EvaluateModelUseCase
 from src.domain.models import EvaluationResult
 from src.domain.ports import LLMClientPort, LLMJudgePort, ResourceMonitorPort
 from src.infra.llm.ollama_adapter import OllamaClientAdapter
