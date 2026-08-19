@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 from typing import Any
 
 import httpx
@@ -24,7 +25,7 @@ class OllamaClientAdapter(LLMClientPort):
     def __init__(
         self,
         model_name: str,
-        base_url: str = "http://ollama:11434",
+        base_url: str | None = None,
         timeout: float = 120.0,
     ) -> None:
         """Initialize the adapter.
@@ -35,7 +36,9 @@ class OllamaClientAdapter(LLMClientPort):
             timeout: HTTP request timeout in seconds.
         """
         self.model_name = model_name
-        self.base_url = base_url
+        self.base_url = base_url or os.environ.get(
+            "OLLAMA_BASE_URL", "http://localhost:11434"
+        )
         self._client = httpx.Client(
             base_url=base_url.rstrip("/"), timeout=timeout
         )

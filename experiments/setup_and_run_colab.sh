@@ -28,5 +28,6 @@ ollama pull mistral
 #ollama pull phi3:mini
 
 echo "=== 4. Executing latency tests ==="
+export OLLAMA_BASE_URL="http://localhost:11434"
 export PYTHONPATH="$PWD:$PYTHONPATH"
 python3 experiments/run_latency_test.py

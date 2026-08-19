@@ -7,7 +7,7 @@ services:
       - .:/workspace:cached
     command: sleep infinity
     environment:
-      - LLM_API_URL=http://ollama:11434/v1
+      - OLLAMA_BASE_URL=http://ollama:11434
 
   ollama:
     image: ollama/ollama:latest
