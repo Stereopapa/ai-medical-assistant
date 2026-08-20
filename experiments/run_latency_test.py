@@ -72,6 +72,10 @@ def main() -> None:
         use_case = EvaluateModelUseCase(
             client=build_client(model_name), judge=judge, monitor=monitor
         )
+
+        print(f"Warming up '{model_name}'...")
+        use_case.execute(model_name, "Hello")
+
         for prompt in TEST_PROMPTS:
             print(f"\nEvaluating '{model_name}' | '{prompt[:60]}...'")
             try:

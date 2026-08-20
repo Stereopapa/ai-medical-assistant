@@ -71,6 +71,9 @@ environments:
   phase, the experiment can be executed in Google Colab. The automated setup is triggered using the following commands:
 
   ```bash
+  %%writefile .env
+  GEMINI_API_KEY=real_key
+  OPENAI_API_KEY=real_key
   !rm -rf ai-medical-assistant
   !git clone -b dev https://github.com/Stereopapa/ai-medical-assistant.git
   %cd ai-medical-assistant
