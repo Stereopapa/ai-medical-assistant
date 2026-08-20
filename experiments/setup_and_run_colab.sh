@@ -15,7 +15,8 @@ uv sync
 
 echo "=== 2. Starting Ollama server in background ==="
 if ! pgrep -x "ollama" > /dev/null; then
-    ollama serve &
+    export OLLAMA_DEBUG=0
+    ollama serve > /dev/null 2>&1 &
     sleep 5
 else
     echo "Ollama server already running, skipping."
@@ -30,5 +31,5 @@ ollama pull mistral
 
 echo "=== 4. Executing latency tests ==="
 export OLLAMA_BASE_URL="http://localhost:11434"
-export PYTHONPATH="$PWD:$PYTHONPATH" #TODO: maybe not required anymore
-python3 experiments/run_latency_test.py
+export PYTHONPATH="$PWD:$PYTHONPATH"
+uv run python experiments/run_latency_test.py

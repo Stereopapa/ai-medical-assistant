@@ -5,7 +5,7 @@ from __future__ import annotations
 import httpx
 from openai import OpenAI
 
-from infra.llm.judge.base_adapter import BaseJudgeAdapter
+from src.infra.llm.judge.base_adapter import BaseJudgeAdapter
 
 
 class OpenAIJudgeAdapter(BaseJudgeAdapter):

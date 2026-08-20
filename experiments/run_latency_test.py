@@ -7,19 +7,19 @@ from typing import Literal
 
 import httpx
 
-from infra.llm.judge.gemini_adapter import GeminiJudgeAdapter
-from infra.llm.judge.openai_adapter import OpenAIJudgeAdapter
 from src.app.use_cases.evaluate_model import EvaluateModelUseCase
 from src.domain.models import EvaluationResult
 from src.domain.ports import LLMClientPort, LLMJudgePort, ResourceMonitorPort
+from src.infra.llm.judge.gemini_adapter import GeminiJudgeAdapter
+from src.infra.llm.judge.openai_adapter import OpenAIJudgeAdapter
 from src.infra.llm.ollama_adapter import OllamaClientAdapter
 from src.infra.monitoring.system_monitor_adapter import SystemMonitorAdapter
 
 # Test prompts about supporting diabetes patients.
 TEST_PROMPTS: list[str] = [
     "What are the early symptoms of type 2 diabetes I should watch for?",
-    "How can I manage my blood sugar levels through diet and exercise?",
-    "What is the difference between type 1 and type 2 diabetes?",
+    # "How can I manage my blood sugar levels through diet and exercise?",
+    # "What is the difference between type 1 and type 2 diabetes?",
 ]
 
 # Models to evaluate - adjust tags to your local Ollama installation.
@@ -64,7 +64,7 @@ def build_judge(judge_type: JudgeType) -> LLMJudgePort:
         if not api_key:
             raise ValueError("GEMINI_API_KEY is not set.")
         return GeminiJudgeAdapter(
-            model="gemini-2.5-pro",
+            model="gemini-3.1-pro-preview",
             api_key=api_key,
             rate_limit_delay_sec=60,
         )

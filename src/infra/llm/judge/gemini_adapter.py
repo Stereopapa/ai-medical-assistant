@@ -6,7 +6,7 @@ import httpx
 from google import genai
 from google.genai import types as genai_types
 
-from infra.llm.judge.base_adapter import BaseJudgeAdapter
+from src.infra.llm.judge.base_adapter import BaseJudgeAdapter
 
 
 class GeminiJudgeAdapter(BaseJudgeAdapter):

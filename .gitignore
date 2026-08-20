@@ -1,1 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Środowisko wirtualne (uv)
+.venv/
+
+# Narzędzia i cache
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+
+# Zmienne środowiskowe i sekrety (nie ignorujemy .env.example)
 .env
+!.env.example
+
+# Konfiguracja IDE (JetBrains)
+.idea/
