@@ -68,15 +68,15 @@ class EvaluateModelUseCase:
         score: EvaluationScore | None = None
         try:
             score = self._judge.evaluate_response(prompt, response)
-        except (httpx.HTTPError, RuntimeError, ValueError):
-            # Judge failures should not discard the run's other metrics.
-            score = None
+        except (httpx.HTTPError, RuntimeError, ValueError) as exc:
+            print(f"  [WARNING] Judge failed to evaluate response: {exc}")
+            pass
 
         return EvaluationResult(
             model_name=model_name,
             prompt=prompt,
             response=response,
-            ttft_sec=0.0,  # Populated by streaming-capable adapters.
+            ttft_sec=0.0,
             total_time_sec=round(end_time - start_time, 3),
             resources=resources,
             score=score,

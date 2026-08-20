@@ -91,11 +91,17 @@ After registration, activate it in PyCharm via Help → Register.
         - Environment: `/workspaces/secure2fa-api/.venv/bin/python`
     - Click **OK**
 
-6. You can also set up a run configuration to run the app directly from anywhere in code:
-    - In the top right corner click **Current File → Edit Configurations**
-    - Click **+** in the top left corner → select **uv run**
-    - Set **Script** field to `/workspaces/secure2fa-api/app/main.py`
-    - Click **Apply**
+6. You can also set up automatic read of `.env` file for Run Current File Option
+
+- In the top-right corner of PyCharm (next to the green **Run/Play** button), expand the run configurations dropdown
+  menu and click **Edit Configurations...**.
+- In the bottom-left corner of the opened window, click the **Edit configuration templates...** link.
+- From the list of templates on the left side, select **Python**.
+- On the right side, find the **Environment variables** field and click the **Folder icon** at the end of the input box.
+- In the new window that appears, look at the bottom section for the **Load env file** option (or click the `+` icon /
+  browse button next to the env file section).
+- Write path to `.env` file from your project directory.
+- Click **OK**, then click **Apply** to save the changes.
 
 #### PyCharm Plugin Configuration
 

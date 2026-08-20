@@ -26,7 +26,7 @@ class OllamaClientAdapter(LLMClientPort):
         self,
         model_name: str,
         base_url: str | None = None,
-        timeout: float = 120.0,
+        timeout: float = 300.0,
     ) -> None:
         """Initialize the adapter.
 

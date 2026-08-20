@@ -74,7 +74,7 @@ environments:
   import os
   from google.colab import userdata
   os.environ["GEMINI_API_KEY"] = userdata.get("GEMINI_API_KEY")
-  os.environ["OPENAI_API_KEY"] = userdata.get("OPENAI_API_KEY")
+  # os.environ["OPENAI_API_KEY"] = userdata.get("OPENAI_API_KEY")
   !rm -rf ai-medical-assistant
   !git clone -b dev https://github.com/Stereopapa/ai-medical-assistant.git
   %cd ai-medical-assistant

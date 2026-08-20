@@ -7,12 +7,12 @@ from typing import Literal
 
 import httpx
 
+from infra.llm.judge.gemini_adapter import GeminiJudgeAdapter
+from infra.llm.judge.openai_adapter import OpenAIJudgeAdapter
 from src.app.use_cases.evaluate_model import EvaluateModelUseCase
 from src.domain.models import EvaluationResult
 from src.domain.ports import LLMClientPort, LLMJudgePort, ResourceMonitorPort
-from src.infra.llm.gemini_judge_adapter import GeminiJudgeAdapter
 from src.infra.llm.ollama_adapter import OllamaClientAdapter
-from src.infra.llm.openai_judge_adapter import OpenAIJudgeAdapter
 from src.infra.monitoring.system_monitor_adapter import SystemMonitorAdapter
 
 # Test prompts about supporting diabetes patients.
@@ -31,7 +31,6 @@ MODEL_NAMES: list[str] = [
     # "qwen2.5:0.5b",
 ]
 
-# Typ pomocniczy dla wyboru sędziego
 JudgeType = Literal["openai", "gemini-flash", "gemini-pro"]
 
 
@@ -47,17 +46,17 @@ def build_judge(judge_type: JudgeType) -> LLMJudgePort:
         return OpenAIJudgeAdapter(
             model="gpt-4o-mini",
             api_key=api_key,
-            rate_limit_delay_sec=0,  # Brak sztucznego opóźnienia
+            rate_limit_delay_sec=30,
         )
 
     elif judge_type == "gemini-flash":
-        api_key = os.getenv("GEMINI_API_KEY")
+        api_key = os.environ.get("GEMINI_API_KEY")
         if not api_key:
             raise ValueError("GEMINI_API_KEY is not set.")
         return GeminiJudgeAdapter(
-            model="gemini-1.5-flash",
+            model="gemini-3.6-flash",
             api_key=api_key,
-            rate_limit_delay_sec=0,  # Wysokie darmowe limity (15 RPM / 1500 RPD)
+            rate_limit_delay_sec=30,
         )
 
     elif judge_type == "gemini-pro":
@@ -65,9 +64,9 @@ def build_judge(judge_type: JudgeType) -> LLMJudgePort:
         if not api_key:
             raise ValueError("GEMINI_API_KEY is not set.")
         return GeminiJudgeAdapter(
-            model="gemini-1.5-pro",
+            model="gemini-2.5-pro",
             api_key=api_key,
-            rate_limit_delay_sec=30,
+            rate_limit_delay_sec=60,
         )
 
     else:
