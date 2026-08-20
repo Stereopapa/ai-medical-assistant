@@ -40,7 +40,7 @@ class OllamaClientAdapter(LLMClientPort):
             "OLLAMA_BASE_URL", "http://localhost:11434"
         )
         self._client = httpx.Client(
-            base_url=base_url.rstrip("/"), timeout=timeout
+            base_url=self.base_url.rstrip("/"), timeout=timeout
         )
 
     def generate_response(self, prompt: str) -> str:
