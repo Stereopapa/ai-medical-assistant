@@ -70,10 +70,11 @@ environments:
 * **Google Colab (Cloud Execution):** For rapid evaluation and access to cloud GPUs (e.g., NVIDIA T4) during the testing
   phase, the experiment can be executed in Google Colab. The automated setup is triggered using the following commands:
 
-  ```bash
-  %%writefile .env
-  GEMINI_API_KEY=real_key
-  OPENAI_API_KEY=real_key
+  ```python
+  import os
+  from google.colab import userdata
+  os.environ["GEMINI_API_KEY"] = userdata.get("GEMINI_API_KEY")
+  os.environ["OPENAI_API_KEY"] = userdata.get("OPENAI_API_KEY")
   !rm -rf ai-medical-assistant
   !git clone -b dev https://github.com/Stereopapa/ai-medical-assistant.git
   %cd ai-medical-assistant

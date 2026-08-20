@@ -10,6 +10,7 @@ dependencies = [
     "openai",
     "psutil",
     "pynvml>=13.0.1",
+    "google-genai>=2.19.0",
 ]
 
 [dependency-groups]

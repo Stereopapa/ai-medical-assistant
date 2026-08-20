@@ -10,7 +10,8 @@ else
     echo "Ollama already installed, skipping."
 fi
 
-pip install nvidia-ml-py psutil httpx
+pip install -q uv
+uv sync
 
 echo "=== 2. Starting Ollama server in background ==="
 if ! pgrep -x "ollama" > /dev/null; then
@@ -29,5 +30,5 @@ ollama pull mistral
 
 echo "=== 4. Executing latency tests ==="
 export OLLAMA_BASE_URL="http://localhost:11434"
-export PYTHONPATH="$PWD:$PYTHONPATH"
+export PYTHONPATH="$PWD:$PYTHONPATH" #TODO: maybe not required anymore
 python3 experiments/run_latency_test.py

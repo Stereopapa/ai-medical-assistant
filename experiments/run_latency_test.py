@@ -2,13 +2,17 @@
 
 from __future__ import annotations
 
+import os
+from typing import Literal
+
 import httpx
 
 from src.app.use_cases.evaluate_model import EvaluateModelUseCase
 from src.domain.models import EvaluationResult
 from src.domain.ports import LLMClientPort, LLMJudgePort, ResourceMonitorPort
+from src.infra.llm.gemini_judge_adapter import GeminiJudgeAdapter
 from src.infra.llm.ollama_adapter import OllamaClientAdapter
-from src.infra.llm.vertex_judge_adapter import VertexAIJudgeAdapter
+from src.infra.llm.openai_judge_adapter import OpenAIJudgeAdapter
 from src.infra.monitoring.system_monitor_adapter import SystemMonitorAdapter
 
 # Test prompts about supporting diabetes patients.
@@ -27,6 +31,48 @@ MODEL_NAMES: list[str] = [
     # "qwen2.5:0.5b",
 ]
 
+# Typ pomocniczy dla wyboru sędziego
+JudgeType = Literal["openai", "gemini-flash", "gemini-pro"]
+
+
+def build_judge(judge_type: JudgeType) -> LLMJudgePort:
+    """Factory: creates a configured LLM Judge adapter based on selected provider/model.
+
+    Encapsulates rate-limiting delays so main execution loop stays clean.
+    """
+    if judge_type == "openai":
+        api_key = os.getenv("OPENAI_API_KEY")
+        if not api_key:
+            raise ValueError("OPENAI_API_KEY is not set.")
+        return OpenAIJudgeAdapter(
+            model="gpt-4o-mini",
+            api_key=api_key,
+            rate_limit_delay_sec=0,  # Brak sztucznego opóźnienia
+        )
+
+    elif judge_type == "gemini-flash":
+        api_key = os.getenv("GEMINI_API_KEY")
+        if not api_key:
+            raise ValueError("GEMINI_API_KEY is not set.")
+        return GeminiJudgeAdapter(
+            model="gemini-1.5-flash",
+            api_key=api_key,
+            rate_limit_delay_sec=0,  # Wysokie darmowe limity (15 RPM / 1500 RPD)
+        )
+
+    elif judge_type == "gemini-pro":
+        api_key = os.getenv("GEMINI_API_KEY")
+        if not api_key:
+            raise ValueError("GEMINI_API_KEY is not set.")
+        return GeminiJudgeAdapter(
+            model="gemini-1.5-pro",
+            api_key=api_key,
+            rate_limit_delay_sec=30,
+        )
+
+    else:
+        raise ValueError(f"Unknown judge_type: {judge_type}")
+
 
 def build_client(model_name: str) -> LLMClientPort:
     """Factory: create an Ollama-backed client for a model.
@@ -38,19 +84,6 @@ def build_client(model_name: str) -> LLMClientPort:
         A configured OllamaClientAdapter.
     """
     return OllamaClientAdapter(model_name=model_name)
-
-
-def build_judge() -> LLMJudgePort:
-    """Factory: create the LLM judge adapter.
-
-    Returns:
-        A VertexAIJudgeAdapter; without a valid key it returns neutral
-        fallback scores.
-    """
-    return VertexAIJudgeAdapter(
-        model="gpt-4o-mini",
-        api_key="sk-local-dev",  # Replace with a real key in production.
-    )
 
 
 def build_monitor() -> ResourceMonitorPort:
@@ -65,7 +98,8 @@ def build_monitor() -> ResourceMonitorPort:
 def main() -> None:
     """Run the evaluation across every model/prompt combination."""
     monitor: ResourceMonitorPort = build_monitor()
-    judge: LLMJudgePort = build_judge()
+    selected_judge: JudgeType = "gemini-flash"
+    judge: LLMJudgePort = build_judge(selected_judge)
     results: list[EvaluationResult] = []
 
     for model_name in MODEL_NAMES:
